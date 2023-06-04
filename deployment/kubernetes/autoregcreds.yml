@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials-frontend
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+data: 
+  .dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJodHRwczovL3JlZ2lzdHJ5LmdpdGxhYi5jb20iOnsKICAgICAgICAgICAgInVzZXJuYW1lIjoiZ2l0bGFiK2RlcGxveS10b2tlbi0xNjE5NTYzIiwKICAgICAgICAgICAgInBhc3N3b3JkIjoieVVkLV8xakhLN2Q5M3BUdlJleWUiLAogICAgICAgICAgICAiYXV0aCI6IloybDBiR0ZpSzJSbGNHeHZlUzEwYjJ0bGJpMHhOakU1TlRZek9ubFZaQzFmTVdwSVN6ZGtPVE53VkhaU1pYbGwiCiAgICAJfQogICAgfQp9Cg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials-backend
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+data: 
+  .dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJodHRwczovL3JlZ2lzdHJ5LmdpdGxhYi5jb20iOnsKICAgICAgICAgICAgInVzZXJuYW1lIjoiZ2l0bGFiK2RlcGxveS10b2tlbi0xNjE5NTY1IiwKICAgICAgICAgICAgInBhc3N3b3JkIjoiOTVEZkhrQXVvQjdWZmY4WGFWeUwiLAogICAgICAgICAgICAiYXV0aCI6IloybDBiR0ZpSzJSbGNHeHZlUzEwYjJ0bGJpMHhOakU1TlRZMU9qazFSR1pJYTBGMWIwSTNWbVptT0ZoaFZubE0iCiAgICAJfQogICAgfQp9Cg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials-ai
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+data: 
+  .dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJodHRwczovL3JlZ2lzdHJ5LmdpdGxhYi5jb20iOnsKICAgICAgICAgICAgInVzZXJuYW1lIjoiZ2l0bGFiK2RlcGxveS10b2tlbi0xNjE5NTY4IiwKICAgICAgICAgICAgInBhc3N3b3JkIjoia25VVnVwQUJCVUdkNW5oVTFGVEMiLAogICAgICAgICAgICAiYXV0aCI6IloybDBiR0ZpSzJSbGNHeHZlUzEwYjJ0bGJpMHhOakU1TlRZNE9tdHVWVloxY0VGQ1FsVkhaRFZ1YUZVeFJsUkQiCiAgICAJfQogICAgfQp9Cg==

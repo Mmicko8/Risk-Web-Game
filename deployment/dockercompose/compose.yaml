@@ -1,0 +1,68 @@
+#docker login registry.gitlab.com -u <user> -p <password>
+
+version: '3'
+services:
+  frontend:
+    container_name: "react-frontend"
+    depends_on:
+      - backend
+    image: registry.gitlab.com/kdg-ti/integratieproject-2/teams-22-23/team-6/front-end:latest
+    
+    environment:
+      NODE_ENV: production
+  backend:
+    container_name: "springboot-backend"
+    restart: "always"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/backend_mysql
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    image: registry.gitlab.com/kdg-ti/integratieproject-2/teams-22-23/team-6/risk-backend:latest
+
+  ai-backend:
+    container_name: "ai-backend"
+    ports:
+      - "5000:5000"
+    environment:
+      - backend=test
+    image: registry.gitlab.com/kdg-ti/integratieproject-2/teams-22-23/team-6/ai-risk-backend:latest
+
+  mysqldb:
+    container_name: "mysql-db"
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: backend_mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      interval: 10s
+      retries: 10
+      start_period: 10s
+
+  maildev:
+    container_name: "maildev-service"
+    image: maildev/maildev
+    environment:
+      MAILDEV_SMTP_PORT: 587
+      MAILDEV_WEB_PORT: 1080
+      MAILDEV_OUTGOING_USER: risky_business@gmx.com
+      MAILDEV_INCOMING_USER: risky_business@gmx.com
+      MAILDEV_WEB_USER: risky_business@gmx.com
+      MAILDEV_OUTGOING_PASS: WNK2OAG7PHKVVCAIBPHB
+      MAILDEV_INCOMING_PASS: WNK2OAG7PHKVVCAIBPHB
+      MAILDEV_WEB_PASS: WNK2OAG7PHKVVCAIBPHB
+
+  reverse-proxy:
+    container_name: "nginx-reverse-proxy"
+    image: registry.gitlab.com/kdg-ti/integratieproject-2/teams-22-23/devops-1/team-2/devops-team-2:latest
+    restart: "always"
+    environment:
+      REGISTRY_AUTH_USERNAME: sharedinlogtoken
+      REGISTRY_AUTH_PASSWORD: glpat-TSt9W57RegoVtqbTF7eX
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend

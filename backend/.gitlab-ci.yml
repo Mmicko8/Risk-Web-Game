@@ -1,0 +1,53 @@
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE
+  DOCKER_TLS_CERTDIR: "/certs"
+  IMAGE_OPENJDK: gradle:jdk17-alpine
+
+before_script:
+  - chmod +x ./Risk-Backend/gradlew
+
+
+stages:
+  - build
+  - test
+  - imagepush
+
+build:  
+  image: $IMAGE_OPENJDK
+  stage: build
+  only:
+    refs:
+      - main
+  script:
+    - java --version
+    - cd Risk-Backend
+    - ./gradlew build -x test
+  artifacts:
+    paths:
+      - Risk-Backend/build/libs/*SNAPSHOT.jar
+
+unit-test:
+  image: $IMAGE_OPENJDK
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    - cd Risk-Backend
+    - ./gradlew test -Dspring.profiles.active=test
+
+imagepush:
+  image: docker:latest
+  stage: imagepush
+  only:
+    refs:
+      - main
+  services:
+    - docker:dind
+  script:
+    - cd Risk-Backend
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+
+
+after_script:
+  - echo "End CI"

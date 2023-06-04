@@ -1,0 +1,70 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend-ai
+    labels:
+      app: &label ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *label
+  template:
+    metadata:
+      labels:
+        app: *label
+    spec:  
+      containers:
+      - name: backend-ai-container
+        image: registry.gitlab.com/kdg-ti/integratieproject-2/teams-22-23/team-6/ai-risk-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        env:
+        - name: backend_url
+          value: http://backend-service:8080
+        - name: ai_api_path
+          value: "/api"
+      imagePullSecrets:
+      - name: registry-credentials-ai
+      restartPolicy: Always
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "ai-service"
+  labels:
+    app: &label ai
+spec:
+  type: NodePort
+  ports:
+  - protocol: "TCP"
+    port: 5000
+    targetPort: 5000
+  selector:
+    app: *label
+
+---
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-ai-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-ai-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 150

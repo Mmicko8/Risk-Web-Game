@@ -1,0 +1,7 @@
+.territory:hover {
+    cursor: pointer;
+}
+
+.territory:hover path {
+    stroke-width: 5px;
+}
