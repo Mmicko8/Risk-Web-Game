@@ -2,7 +2,6 @@
 
 ## Team Members
 
-- [X] [Giuseppe Janssens]
 - [X] [Branko Leemans]
 - [X] [Alexander Wuyts]
 - [X] [Janno Van Walleghem]
