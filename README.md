@@ -8,3 +8,7 @@ Project Risk - Web application of the board game Risk with online multiplayer, A
 - [X] [Alexander Wuyts]
 - [X] [Janno Van Walleghem]
 - [X] [Michel Matthe]
+
+## Coach
+
+- [X] [Jan Van Overveldt]
